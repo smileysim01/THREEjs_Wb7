@@ -1,0 +1,37 @@
+Please indicate the features you have implemented here by putting an "x" (i.e. "[x]") and a brief explanation of what the graders need to do to see it:
+
+# Basic features:
+[ ] take out bouncing cube
+[ ] place at least 1 more swing
+[ ] place carousel
+[ ] carousel has poles and "horses"
+[ ] carousel has correct motion (spins, horses go up and down)
+[ ] another moving object
+
+# Bonus features:
+[ ] fancier looking carousel
+[ ] more theme park rides (#1 of up to three, with hierarchical motion)
+[ ] more theme park rides (#2 of up to three, with hierarchical motion)
+[ ] more theme park rides (#3 of up to three, with hierarchical motion)
+
+Note: please refer to the workbook instructions and rubrics for the detailed requirements.
+
+# External files:
+
+If you have loaded any geometry from OBJ files, use the space below to credit your source for each file. Be sure to include a confirmation that you are permitted to use this asset (e.g., it is released under a Creative Commons license).
+
+You can follow this format, or something similar:
+
+- an-example-file.obj
+  - source: https://graphics.cs.wisc.edu/Courses/559-sp2021/
+  - author: username123
+  - license: CC BY 2.0
+
+
+
+
+
+
+
+
+

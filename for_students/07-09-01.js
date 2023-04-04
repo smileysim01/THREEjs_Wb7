@@ -25,7 +25,7 @@ let mixer = new GrCementMixer({x:-7, z:4});
 world.add(mixer);
 let m_ui = new AutoUI(mixer, 300, cDiv, 1, true);
 
-let dumpTruck = new GrDumpTruck({x:-2, z:4});
+let dumpTruck = new GrDumpTruck({x:2, z:4});
 world.add(dumpTruck);
 let d_ui = new AutoUI(dumpTruck, 300, cDiv, 1, true);
 

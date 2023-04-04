@@ -361,7 +361,7 @@ export class GrCementMixer extends GrObject {
     mixer.rotateX(Math.PI/2);
     mixer.scale.set(0.4,0.4,0.4);
     mixer.position.y = 0.8;
-    mixer.position.z = 0.5;
+    mixer.position.z = 0;
 
     const front = new T.Mesh(
       truck_geom,
@@ -371,7 +371,7 @@ export class GrCementMixer extends GrObject {
     front.rotateY(Math.PI/4);
     front.scale.set(0.2,0.2,0.2);
     front.position.y = 0.45;
-    front.position.z = 2.3;
+    front.position.z = 1.8;
 
     const  wheel = [];
     for(let i=0; i<4; i++){
@@ -383,9 +383,9 @@ export class GrCementMixer extends GrObject {
       wheel[i].position.y = -0.25;
       wheel[i].rotateY(Math.PI/2);
     }
-    wheel[0].position.z = 2.3;
+    wheel[0].position.z = 1.8;
     wheel[0].position.x = 0.8;
-    wheel[1].position.z = 2.3;
+    wheel[1].position.z = 1.8;
     wheel[1].position.x = -0.8;
     wheel[2].position.z = -0.25;
     wheel[2].position.x = 0.8;
@@ -456,7 +456,7 @@ export class GrDumpTruck extends GrObject {
     mixer.rotateX(Math.PI/2);
     mixer.scale.set(0.4,0.4,0.4);
     mixer.position.y = 0.8;
-    mixer.position.z = 0.5;
+    mixer.position.z = 0;
 
     const front = new T.Mesh(
       truck_geom,
@@ -466,7 +466,7 @@ export class GrDumpTruck extends GrObject {
     front.rotateY(Math.PI/4);
     front.scale.set(0.2,0.2,0.2);
     front.position.y = 0.45;
-    front.position.z = 2.3;
+    front.position.z = 1.8;
 
     const  wheel = [];
     for(let i=0; i<4; i++){
@@ -478,9 +478,9 @@ export class GrDumpTruck extends GrObject {
       wheel[i].position.y = -0.25;
       wheel[i].rotateY(Math.PI/2);
     }
-    wheel[0].position.z = 2.3;
+    wheel[0].position.z = 1.8;
     wheel[0].position.x = 0.8;
-    wheel[1].position.z = 2.3;
+    wheel[1].position.z = 1.8;
     wheel[1].position.x = -0.8;
     wheel[2].position.z = -0.25;
     wheel[2].position.x = 0.8;

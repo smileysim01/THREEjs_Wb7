@@ -3,6 +3,7 @@
 
 import * as T from "../libs/CS559-Three/build/three.module.js";
 import { GrObject } from "../libs/CS559-Framework/GrObject.js";
+import { makeCheckbox } from "../libs/CS559/inputHelpers.js";
 
 function degreesToRadians(deg) {
   return (deg * Math.PI) / 180;
@@ -333,4 +334,195 @@ export class GrExcavator extends GrObject {
     this.forearm.rotation.z = degreesToRadians(paramValues[5]) + Math.PI / 16;
     this.bucket.rotation.z = degreesToRadians(paramValues[6]);
   }
+}
+
+
+
+let testobjsctr = 0;
+
+export class GrCementMixer extends GrObject {
+  constructor(params = {}) {
+    const group = new T.Group();
+    const box_geometry = new T.BoxGeometry(1.5, 0.5, 2.5);
+    const mixer_geometry = new T.CylinderGeometry(1, 2, 6,6,7,false,0,6.3);
+    const truck_geom = new T.CylinderGeometry(4.5, 6, 6,4,1,false,0,6.3);
+    const wheel_geom = new T.TorusGeometry(1,0.5,16,100);
+
+    const mesh1 = new T.Mesh(
+      box_geometry,
+      new T.MeshStandardMaterial({ color: 'grey' })
+    );
+    mesh1.position.set(params.x,0.45,params.z);
+
+    const mixer = new T.Mesh(
+      mixer_geometry,
+      new T.MeshStandardMaterial({ color: 0xffff00 })
+    );
+    mixer.rotateX(Math.PI/2);
+    mixer.scale.set(0.4,0.4,0.4);
+    mixer.position.y = 0.8;
+    mixer.position.z = 0.5;
+
+    const front = new T.Mesh(
+      truck_geom,
+      new T.MeshStandardMaterial({ color: 'orange' })
+    );
+    front.rotateX(Math.PI/2);
+    front.rotateY(Math.PI/4);
+    front.scale.set(0.2,0.2,0.2);
+    front.position.y = 0.45;
+    front.position.z = 2.3;
+
+    const  wheel = [];
+    for(let i=0; i<4; i++){
+      wheel[i] = new T.Mesh(
+        wheel_geom,
+        new T.MeshStandardMaterial({color: 'black'})
+      );
+      wheel[i].scale.set(0.2,0.2,0.2);
+      wheel[i].position.y = -0.25;
+      wheel[i].rotateY(Math.PI/2);
+    }
+    wheel[0].position.z = 2.3;
+    wheel[0].position.x = 0.8;
+    wheel[1].position.z = 2.3;
+    wheel[1].position.x = -0.8;
+    wheel[2].position.z = -0.25;
+    wheel[2].position.x = 0.8;
+    wheel[3].position.z = -0.25;
+    wheel[3].position.x = -0.8;
+
+
+    // set group with origin at pivot point
+    group.add(mesh1);
+    const g2 = new T.Group();
+    g2.position.set(params.x, 0.5, params.z);
+    g2.add(mixer);
+    g2.add(front);
+    for(let i=0;i<4;i++)  g2.add(wheel[i]);
+    group.add(g2);
+
+    super(`CementMixer-${testobjsctr++}`, group, [
+      ["x", -2, 5, 5],
+      ["z", -5, 5, 2],
+      ["theta", -180, 180, 0],
+      ["tilt", 70, 90, 90],
+      ["rotate", 0, 360]
+    ]);
+
+    this.group = group;
+    this.mesh1 = mesh1;
+    this.mixer = mixer;
+    this.wheel = wheel;
+    this.whole_ob = group;
+
+    // put the object in its place
+    this.group.position.x = params.x ? Number(params.x) : 0;
+    this.group.position.y = params.y ? Number(params.y) : 0;
+    this.group.position.z = params.z ? Number(params.z) : 0;
+    let scale = params.size ? Number(params.size) : 1;
+    group.scale.set(scale, scale, scale);
+  }
+
+  update(paramValues) {
+    this.whole_ob.position.x = paramValues[0];
+    this.whole_ob.position.z = paramValues[1];
+    this.whole_ob.rotation.y = degreesToRadians(paramValues[2]);
+    this.mixer.rotation.x = degreesToRadians(paramValues[3]);
+    this.mixer.rotation.y = degreesToRadians(paramValues[4]);
+  }
+  
+}
+
+
+export class GrDumpTruck extends GrObject {
+  constructor(params = {}) {
+    const group = new T.Group();
+    const box_geometry = new T.BoxGeometry(1.5, 0.5, 2.5);
+    const mixer_geometry = new T.BoxGeometry(3, 6.5, 3);
+    const truck_geom = new T.CylinderGeometry(4.5, 6, 6,4,1,false,0,6.3);
+    const wheel_geom = new T.TorusGeometry(1,0.5,16,100);
+
+    const mesh1 = new T.Mesh(
+      box_geometry,
+      new T.MeshStandardMaterial({ color: 'grey' })
+    );
+    mesh1.position.set(params.x,0.45,params.z);
+
+    const mixer = new T.Mesh(
+      mixer_geometry,
+      new T.MeshStandardMaterial({ color: 'red' })
+    );
+    mixer.rotateX(Math.PI/2);
+    mixer.scale.set(0.4,0.4,0.4);
+    mixer.position.y = 0.8;
+    mixer.position.z = 0.5;
+
+    const front = new T.Mesh(
+      truck_geom,
+      new T.MeshStandardMaterial({ color: 'blue' })
+    );
+    front.rotateX(Math.PI/2);
+    front.rotateY(Math.PI/4);
+    front.scale.set(0.2,0.2,0.2);
+    front.position.y = 0.45;
+    front.position.z = 2.3;
+
+    const  wheel = [];
+    for(let i=0; i<4; i++){
+      wheel[i] = new T.Mesh(
+        wheel_geom,
+        new T.MeshStandardMaterial({color: 'black'})
+      );
+      wheel[i].scale.set(0.2,0.2,0.2);
+      wheel[i].position.y = -0.25;
+      wheel[i].rotateY(Math.PI/2);
+    }
+    wheel[0].position.z = 2.3;
+    wheel[0].position.x = 0.8;
+    wheel[1].position.z = 2.3;
+    wheel[1].position.x = -0.8;
+    wheel[2].position.z = -0.25;
+    wheel[2].position.x = 0.8;
+    wheel[3].position.z = -0.25;
+    wheel[3].position.x = -0.8;
+
+
+    // set group with origin at pivot point
+    group.add(mesh1);
+    const g2 = new T.Group();
+    g2.position.set(params.x, 0.5, params.z);
+    g2.add(mixer);
+    g2.add(front);
+    for(let i=0;i<4;i++)  g2.add(wheel[i]);
+    group.add(g2);
+
+    super(`DumpTruck-${testobjsctr++}`, group, [
+      ["x", -2, 5, 5],
+      ["z", -5, 5, 2],
+      ["theta", -180, 180, 0],
+      ["tilt", 70, 90, 90],
+    ]);
+
+    this.group = group;
+    this.mesh1 = mesh1;
+    this.mixer = mixer;
+    this.wheel = wheel;
+    this.whole_ob = group;
+
+    // put the object in its place
+    this.group.position.x = params.x ? Number(params.x) : 0;
+    this.group.position.y = params.y ? Number(params.y) : 0;
+    this.group.position.z = params.z ? Number(params.z) : 0;
+    let scale = params.size ? Number(params.size) : 1;
+    group.scale.set(scale, scale, scale);
+  }
+
+  update(paramValues) {
+    this.whole_ob.position.x = paramValues[0];
+    this.whole_ob.position.z = paramValues[1];
+    this.whole_ob.rotation.y = degreesToRadians(paramValues[2]);
+    this.mixer.rotation.x = degreesToRadians(paramValues[3]);
+  }
+  
 }

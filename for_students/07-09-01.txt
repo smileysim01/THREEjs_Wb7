@@ -1,11 +1,11 @@
 Please indicate the features you have implemented here by putting an "x" (i.e. "[x]") and a brief explanation of what the graders need to do to see it:
 
 # Basic features:
-[ ] equipment 1 is identifiable (can tell what it is)
-[ ] equipment 2 is identifiable
-[ ] equipment 1 has correct articulation
-[ ] equipment 2 has correct articulation
-[ ] UI works for 1&2
+[*] equipment 1 is identifiable (can tell what it is)
+[*] equipment 2 is identifiable
+[*] equipment 1 has correct articulation
+[*] equipment 2 has correct articulation
+[*] UI works for 1&2
 
 # Bonus features:
 [ ] third machine identifiable with working articulation

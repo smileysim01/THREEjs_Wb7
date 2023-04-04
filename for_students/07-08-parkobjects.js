@@ -362,7 +362,7 @@ export class GrAdvancedSwing extends GrObject {
     // and positions them appropriately.
     function addPosts(group) {
       let post_material = new T.MeshStandardMaterial({
-        color: "red",
+        color: "yellow",
         metalness: 0.6,
         roughness: 0.5
       });
@@ -442,7 +442,6 @@ export class GrCarousel extends GrObject {
   constructor(params = {}) {
     let width = 3;
     let carousel = new T.Group();
-
     let base_geom = new T.CylinderGeometry(width, width, 1, 32);
     let base_mat = new T.MeshStandardMaterial({
       color: "lightblue",
@@ -494,13 +493,43 @@ export class GrCarousel extends GrObject {
     let opole;
     let num_poles = 10;
     let poles = [];
+
+    let horse_material = new T.MeshStandardMaterial({color:"red", roughness:1});
+    
+    class CustomSinCurve extends T.Curve {
+      constructor( scale = 1 ) { 
+        super();
+        this.scale = scale;
+      }
+      getPoint( t, optionalTarget = new T.Vector3() ) {
+        const tx = t * 3 - 1.5;
+        const ty = Math.sin( 2 * Math.PI * t );
+        const tz = 0;
+        return optionalTarget.set( tx, ty, tz ).multiplyScalar( this.scale );
+      }
+    }
+    
+    const path = new CustomSinCurve( 10 );
+    
+    let horse = [];
     for (let i = 0; i < num_poles; i++) {
       opole = new T.Mesh(opole_geom, opole_mat);
       platform_group.add(opole);
+      
       opole.translateY(1.5);
       opole.rotateY((2 * i * Math.PI) / num_poles);
       opole.translateX(0.8 * width);
       poles.push(opole);
+
+      horse[i] = new T.Mesh(new T.TubeGeometry(path, 20, 2, 8, false),horse_material);
+      horse[i].scale.set(0.08,0.08,0.08);
+
+      platform_group.add(horse[i]);
+      horse[i].translateY(1.5);
+      horse[i].rotateY((2 * i * Math.PI) / num_poles);
+      horse[i].translateX(0.8 * width);
+      poles.push(horse[i]);
+
     }
 
     let roof_geom = new T.ConeGeometry(width, 0.5 * width, 32, 4);
@@ -512,8 +541,9 @@ export class GrCarousel extends GrObject {
     // super and we have to call super before we can use this
     super(`Carousel-${carouselObCtr++}`, carousel);
     this.whole_ob = carousel;
-    this.platform = platform;
+    this.platform = platform_group;
     this.poles = poles;
+    this.horses = horse;
 
     // put the object in its place
     this.whole_ob.position.x = params.x ? Number(params.x) : 0;
@@ -521,5 +551,145 @@ export class GrCarousel extends GrObject {
     this.whole_ob.position.z = params.z ? Number(params.z) : 0;
     let scale = params.size ? Number(params.size) : 1;
     carousel.scale.set(scale, scale, scale);
+
+    this.time = 0;
   }
+
+  stepWorld(delta) {
+    let f = 1;
+    this.platform.rotateY(0.003 * delta);
+
+    this.time += delta / 1000; // time in seconds
+    // set the y position based on the time
+
+    let t = this.time;
+    let len = this.horses.length;
+
+    for (let i = 0; i < len; i++)
+      this.horses[i].position.y = Math.sin(t + (len*i)/(Math.PI))/2 + 1.5;
+ }
+}
+
+ let copterObjCtr = 0;
+ // A Carousel.
+ /**
+  * @typedef CopterProperties
+  * @type {object}
+  * @property {number} [x=0]
+  * @property {number} [y=0]
+  * @property {number} [z=0]
+  * @property {number} [size=1]
+  */
+ export class GrCopter extends GrObject {
+   /**
+    * @param {CopterProperties} params
+    */
+   constructor(params = {}) {
+    let box_material = new T.MeshStandardMaterial({ color: "purple" });
+    let box = new T.Mesh(new T.BoxGeometry(10,1,10,1,1,1),box_material);
+    box.scale.set(0.1,0.1,0.1);
+    box.position.y = 4;
+    box.castShadow = true;
+    let eyes_material = new T.MeshStandardMaterial({ color: "white", metalness:1 });
+    let r_eye = new T.Mesh(new T.SphereGeometry(1),eyes_material);
+    r_eye.scale.set(0.1,0.1,0.1);
+    r_eye.position.x = box.position.x + 0.5;
+    r_eye.position.y = 4;
+    r_eye.position.z = box.position.z + 0.15;
+    r_eye.castShadow = true;
+    let l_eye = new T.Mesh(new T.SphereGeometry(1),eyes_material);
+    l_eye.scale.set(0.1,0.1,0.1);
+    l_eye.position.x = box.position.x + 0.5;
+    l_eye.position.y = 4;
+    l_eye.position.z = box.position.z - 0.15;
+    l_eye.castShadow = true;
+    
+    let quadcopter = new T.Group();
+    quadcopter.add(box);
+    quadcopter.add(r_eye);
+    quadcopter.add(l_eye);
+    
+    let propeller_material = new T.MeshStandardMaterial({ color: "orange" });
+    
+    let sphere = [];
+    let fan = [];
+    let propeller = [];
+    for(let i = 0; i < 4; i++){
+        sphere[i] = new T.Mesh(new T.SphereGeometry(1),propeller_material);
+        sphere[i].scale.set(0.1,0.1,0.1);
+        sphere[i].position.y = 4.1;
+        sphere[i].castShadow = true;
+    
+        fan[i] = new T.Mesh(new T.CapsuleGeometry(1,10,8,3),box_material);
+        fan[i].scale.set(0.05,0.05,0.05);
+        fan[i].rotateX(Math.PI/2);
+        fan[i].position.y = 4.1;
+        fan[i].castShadow = true;
+    
+        propeller[i] = new T.Mesh(new T.TorusGeometry(4,0.6,6,6,6.3),propeller_material);
+        propeller[i].scale.set(0.1,0.1,0.1);
+        propeller[i].position.y = 4.1;
+        propeller[i].rotateX(Math.PI/2);
+        propeller[i].castShadow = true;
+        quadcopter.add(propeller[i]);
+        quadcopter.add(fan[i]);
+        quadcopter.add(sphere[i]);
+    }
+    sphere[0].position.x = box.position.x + 0.5;
+    sphere[0].position.z = box.position.z + 0.5;
+    sphere[1].position.x = box.position.x - 0.5;
+    sphere[1].position.z = box.position.z - 0.5;
+    sphere[2].position.x = box.position.x + 0.5;
+    sphere[2].position.z = box.position.z - 0.5;
+    sphere[3].position.x = box.position.x - 0.5;
+    sphere[3].position.z = box.position.z + 0.5;
+    for(let i = 0; i < 4; i++){
+        fan[i].position.x = sphere[i].position.x;
+        fan[i].position.z = sphere[i].position.z;
+        propeller[i].position.x = sphere[i].position.x;
+        propeller[i].position.z = sphere[i].position.z;
+    }
+
+    // note that we have to make the Object3D before we can call
+    // super and we have to call super before we can use this
+    super(`Copter-${copterObjCtr++}`, quadcopter);
+    this.whole_ob = quadcopter;
+    this.fan = fan;
+    this.propeller = propeller;
+
+    // put the object in its place
+    this.whole_ob.position.x = params.x ? Number(params.x) : 0;
+    this.whole_ob.position.y = params.y ? Number(params.y) : 0;
+    this.whole_ob.position.z = params.z ? Number(params.z) : 0;
+    let scale = params.size ? Number(params.size) : 1;
+    quadcopter.scale.set(scale, scale, scale);
+
+    this.time = 0;
+    this.x = Number(params.x);
+    this.z = Number(params.z);
+
+   }
+
+     /**
+   * StepWorld method
+   * @param {*} delta 
+   */
+
+   stepWorld(delta) {
+
+    this.time += delta / 1000;
+    let x = 3 * Math.cos(this.time);
+    let z = 3 * Math.sin(this.time);
+
+    this.whole_ob.position.x = x;
+    this.whole_ob.position.z = z;
+
+    for(let i = 0; i < 4; i++){
+      this.fan[i].rotateOnWorldAxis(new T.Vector3(0,1,0), this.time/20);
+      this.propeller[i].rotateOnWorldAxis(new T.Vector3(0,1,0), this.time/20);
+    }
+    this.whole_ob.lookAt(this.x,0,this.z);
+
+ }
+
 }

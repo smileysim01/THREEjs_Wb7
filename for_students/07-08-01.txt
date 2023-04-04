@@ -1,12 +1,12 @@
 Please indicate the features you have implemented here by putting an "x" (i.e. "[x]") and a brief explanation of what the graders need to do to see it:
 
 # Basic features:
-[ ] take out bouncing cube
-[ ] place at least 1 more swing
-[ ] place carousel
-[ ] carousel has poles and "horses"
-[ ] carousel has correct motion (spins, horses go up and down)
-[ ] another moving object
+[*] take out bouncing cube
+[*] place at least 1 more swing
+[*] place carousel
+[*] carousel has poles and "horses"
+[*] carousel has correct motion (spins, horses go up and down)
+[*] another moving object
 
 # Bonus features:
 [ ] fancier looking carousel

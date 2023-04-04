@@ -1,22 +1,22 @@
 Please indicate the features you have implemented here by putting an "x" (i.e. "[x]") and a brief explanation of what the graders need to do to see it:
 
 # Basic features:
-[ ] Basics in place (freebie, because we gave it to you)
-[ ] Some aircraft that isn’t a donut
-[ ] A propeller that spins (not the body)
-[ ] More than one propeller spinning (per aircraft)
-[ ] (at least) One aircraft that flies in a circle (or curved path)
-[ ] aircraft points forward as it moves
-[ ] multiple aircraft both moving, both with propellers
-[ ] Radar dish (or some object)
-[ ] Radar correctly points at aircraft (tracks as aircraft moves)
+[*] Basics in place (freebie, because we gave it to you)
+[*] Some aircraft that isn’t a donut
+[*] A propeller that spins (not the body)
+[*] More than one propeller spinning (per aircraft)
+[*] (at least) One aircraft that flies in a circle (or curved path)
+[*] aircraft points forward as it moves
+[*] multiple aircraft both moving, both with propellers
+[*] Radar dish (or some object)
+[*] Radar correctly points at aircraft (tracks as aircraft moves)
 
 # Bonus features:
-[ ] cool aircraft (describe below):
+[*] cool aircraft (describe below):
     [what you did to make it look cool]
 
-[ ] more complex motion
-[ ] multiple types of aircraft
+[*] more complex motion
+[*] multiple types of aircraft
 [ ] other cool features (describe below):
     [your cool feature]
 
